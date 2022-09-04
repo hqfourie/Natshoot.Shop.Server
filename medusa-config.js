@@ -28,10 +28,6 @@ const ADMIN_CORS = process.env.ADMIN_CORS || "http://localhost:7000,http://local
 // CORS to avoid issues when consuming Medusa from a client
 const STORE_CORS = process.env.STORE_CORS || "http://localhost:8000";
 
-// Database URL (here we use a local database called medusa-development)
-const DATABASE_URL =
-  process.env.DATABASE_URL || "postgres://localhost/medusa-store";
-
 // Medusa uses Redis, so this needs configuration as well
 const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
 
@@ -41,6 +37,16 @@ const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || "";
 
 const JWT_SECRET = process.env.JWT_SECRET || "cbb5b837-e500-4050-9e5d-a22543f775c";
 const COOKIE_SECRET = process.env.COOKIE_SECRET || "5c748121-caf4-42d5-9e3b-39c276239f0a";
+
+const DB_USERNAME = process.env.DB_USERNAME;
+const DB_PASSWORD = process.env.DB_PASSWORD;
+const DB_HOST = process.env.DB_HOST;
+const DB_PORT = process.env.DB_PORT;
+const DB_DATABASE = process.env.DB_DATABASE;
+
+// Database URL (here we use a local database called medusa-development)
+const DATABASE_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`;
+
 
 // This is the place to include plugins. See API documentation for a thorough guide on plugins.
 const plugins = [
@@ -67,6 +73,7 @@ module.exports = {
     database_logging: true,
     jwt_secret: JWT_SECRET,
     cookie_secret: COOKIE_SECRET,
+    database_extra: { ssl: { rejectUnauthorized: false } }
   },
   plugins,
 };
