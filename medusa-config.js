@@ -59,7 +59,7 @@ const plugins = [
 
 module.exports = {
   projectConfig: {
-    redis_url: REDIS_URL,
+    // redis_url: REDIS_URL,
     database_type: "postgres",
     database_url: DATABASE_URL,
     store_cors: STORE_CORS,
