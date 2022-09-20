@@ -1,4 +1,5 @@
 const dotenv = require('dotenv')
+const fs = require('fs');
 
 let ENV_FILE_NAME = '';
 switch (process.env.NODE_ENV) {
@@ -35,7 +36,9 @@ const DB_PORT = process.env.DB_PORT;
 const DB_DATABASE = process.env.DB_DATABASE;
 
 // Database URL (here we use a local database called medusa-development)
-const DATABASE_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`;
+// const DATABASE_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`;
+const DATABASE_URL = `postgresql://doadmin:AVNS_lwShJwiYF247MPOYURL@app-7058760e-5b2c-4e0e-8ee9-ad8613d226bd-do-user-12260352-0.b.db.ondigitalocean.com:25060/defaultdb?sslmode=require&ssl=true`;
+
 
 console.log(DATABASE_URL);
 
@@ -69,11 +72,23 @@ module.exports = {
     // redis_url: REDIS_URL,
     database_type: "postgres",
     database_url: DATABASE_URL,
+    database_logging: true,
     store_cors: STORE_CORS,
     admin_cors: ADMIN_CORS,
-    database_logging: true,
     jwt_secret: JWT_SECRET,
     cookie_secret: COOKIE_SECRET,
-  },
-  plugins,
+    database_extra: {
+      ssl: {
+        rejectUnauthorized: true,
+        ca: fs.readFileSync("natshootdb.crt").toString(),
+      }
+    },
+    plugins,
+  }
 };
+
+// console.log('READ FILE START')
+
+// console.log(fs.readFileSync("natshootdb.crt", { encoding: 'utf8', flag: 'r' }))
+
+// console.log('READ FILE END')
